@@ -141,6 +141,7 @@ bot.on("privmsg", msg => {
                     return
                 }
                 let ports = state.networkState[args[0]]
+                temp.expiryState = {...state.expiryState}
                 delete temp.expiryState[args[0]]
                 for (let i of ports.c2s) {
                     temp.queue.push({
