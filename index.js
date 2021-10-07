@@ -221,7 +221,7 @@ bot.on("privmsg", msg => {
                     switch (check.status) {
                         case "success": {
                             if (check.expiryTS > Date.now()) {
-                                if (check.valid) seenInvalid = true
+                                if (!check.valid) seenInvalid = true
                                 msg.reply(`  ${addr}: Expires in ${((check.expiryTS - Date.now()) / 86400000).toFixed(2)}d (${check.expiry})${check.valid ? "" : " (!)"}`)
                             } else {
                                 msg.reply(`  ${addr}: Expired ${((Date.now() - check.expiryTS) / 86400000).toFixed(2)}d ago (${check.expiry})`)
