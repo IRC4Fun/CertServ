@@ -1,0 +1,26 @@
+{
+    "user": {
+        "nick": "CertServ",
+        "ident": "certserv",
+        "gecos": "CertServ",
+        "oper": {
+            "name": "CertServ",
+            "password": "password"
+        }
+    },
+    "channels": [
+        "#services"
+    ],
+    "server": {
+        "host": "localhost",
+        "port": 6697,
+        "secure": true
+    },
+    "timeout": 10000,
+    "rate": 10,
+    "log": true,
+    "prefix": ".",
+    "overrideHost": {
+        "example-irc-server-name.invalid": "example.com"
+    }
+}
