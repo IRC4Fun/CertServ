@@ -45,6 +45,7 @@ bot.on("registered", () => {
         bot.join(channel)
     })
     refreshState()
+    setInterval(refreshState, 600000)
 })
 function saveState() {
     fs.writeFileSync(__dirname + "/data.json", JSON.stringify(state))
