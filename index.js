@@ -141,6 +141,10 @@ bot.on("privmsg", msg => {
                     msg.reply(`ERROR: No such server`)
                     return
                 }
+                if ((temp.inProgress > 0 || temp.queue.length > 0) && temp.isRefreshAll) {
+                    msg.reply("ERROR: A refresh all is already running. Please try again later.")
+                    return
+                }
                 let ports = state.networkState[args[0]]
                 temp.expiryState = {...state.expiryState}
                 delete temp.expiryState[args[0]]
@@ -172,6 +176,10 @@ bot.on("privmsg", msg => {
                 break
             }
             case "refreshall": {
+                if (temp.inProgress > 0 || temp.queue.length > 0) {
+                    msg.reply("ERROR: Other jobs are currently running, try again later.")
+                    return
+                }
                 let jobs = 0
                 let servers = 0
                 temp.expiryState = {}
