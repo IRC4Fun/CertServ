@@ -342,6 +342,10 @@ setInterval(() => {
                 log("Replaced original state with transient state")
                 state.expiryState = temp.expiryState
                 temp.expiryState = null
+                if (temp.isRefreshAll) {
+                    temp.isRefreshAll = false
+                    state.expiryLastUpdated = Date.now()
+                }
                 saveState()
             }
         }
