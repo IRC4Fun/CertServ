@@ -1,3 +1,4 @@
+const crypto = require("crypto")
 const fs = require("fs")
 const tls = require("tls")
 const IRC = require("irc-framework")
@@ -125,7 +126,7 @@ bot.on("privmsg", msg => {
                 msg.reply("  help: Get this message")
                 msg.reply("  refreshnet: Refresh network state")
                 msg.reply("  refresh <server>: Refresh a server")
-                msg.reply("  check <server>: Check a server")
+                msg.reply("  check <server> [--spkifp]: Check a server")
                 msg.reply("  refreshall: Refresh all servers")
                 msg.reply("  info: Show information about the bot, and statistics")
                 msg.reply("  expired: Show expired certificates")
@@ -234,6 +235,9 @@ bot.on("privmsg", msg => {
                                 msg.reply(`  ${addr}: Expires in ${((check.expiryTS - Date.now()) / 86400000).toFixed(2)}d (${check.expiry})${check.valid ? "" : " (!)"}`)
                             } else {
                                 msg.reply(`  ${addr}: Expired ${((Date.now() - check.expiryTS) / 86400000).toFixed(2)}d ago (${check.expiry})`)
+                            }
+                            if (args[1] === "--spkifp" && check.type === "s2s") {
+                                msg.reply(`  ${Array(addr.length + 1).fill(" ").join("")} ${check.spkifp}`)
                             }
                             break
                         }
@@ -360,10 +364,11 @@ setInterval(() => {
             res.expiry = cert.validTo
             res.expiryTS = +new Date(cert.validTo)
             res.valid = conn.authorized
+            res.spkifp = crypto.createHash("sha256").update(cert.publicKey.export({type: "spki", format: "der"})).digest("base64")
             jobEnded()
             conn.end()
         })
-        conn.on("error", () => {
+        conn.on("error", (e) => {
             if (hasFinished) return
             res.status = "error"
             jobEnded()
