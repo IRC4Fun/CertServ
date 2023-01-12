@@ -74,7 +74,7 @@ bot.on("server links", (links) => {
             s2s: []
         }
         temp.pendingStats.add(el)
-        bot.raw("stats", "P", el)
+        bot.raw("stats", "p", el)
     })
     setTimeout(() => {
         if (rev !== temp.rev) return
@@ -109,7 +109,7 @@ bot.on("notice", notice => {
 bot.on("raw", line => {
     if (!line.from_server) return
     let match
-    if (match = line.line.match(/:([^ ]+) 219 [^ ]+ P :End of \/STATS report\r?\n/)) {
+    if (match = line.line.match(/:([^ ]+) 219 [^ ]+ p :End of \/STATS report\r?\n/)) {
         temp.pendingStats.delete(match[1])
     }
 })
@@ -122,7 +122,6 @@ bot.on("privmsg", msg => {
         switch (cmd) {
             case "help": {
                 msg.reply("CertServ is a utility to view information about certificate expiry.")
-                msg.reply("Source: https://git.semisol.dev/Semisol/CertServ")
                 msg.reply("  help: Get this message")
                 msg.reply("  refreshnet: Refresh network state")
                 msg.reply("  refresh <server>: Refresh a server")
